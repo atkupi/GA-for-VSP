@@ -50,7 +50,7 @@ public class Costs {
 		for(int i=depots;i<depots+trips;i++){
 			int kk=0;
 			for(int j=depots;j<depots+trips;j++){
-				if(kk++ % 25==0) {
+				if(kk++ % 20==0) {
 					connection.close();
 					connection.open();
 				}

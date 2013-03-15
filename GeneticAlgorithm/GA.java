@@ -32,8 +32,8 @@ public class GA {
 		BEGIN 				= System.currentTimeMillis();
 		rand 				= new Random();
 		
-		min_start_time		= 10000;
-		max_start_time		= 40000;
+		min_start_time		= 1000;
+		max_start_time		= 4000; 
 		
 		maxIteration 		= 1000;
 		mutationPercent 	= 10;
