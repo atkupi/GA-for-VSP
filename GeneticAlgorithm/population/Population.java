@@ -56,14 +56,16 @@ public class Population{
 		
 		//RandomPopulation generieren
 		int startIndex = 0;
+		int depot = 0;
+		int vehicle = 0;
 		for(int k=0;k<individuals;k++){
 			
 			for(int l=startIndex;l<genes;l=l+2){
-				int depot 			= (int) Math.floor(rand.nextDouble()*depots)+1;
+				while(!R.checkTypeConstraint(l/2, depot)) depot = (int) Math.floor(rand.nextDouble()*depots)+1;
 				dummy[k][l]	= depot;
 				
-				int vehikel 		= (int) Math.floor(rand.nextDouble()*VperD[depot-1])+1;
-				dummy[k][l+1]		= vehikel;
+				vehicle 		= (int) Math.floor(rand.nextDouble()*VperD[depot-1])+1;
+				dummy[k][l+1]		= vehicle;
 			}
 			
 					//clear screen
@@ -664,6 +666,7 @@ public int[] selectReallyWorst(int amount){
 			child = population[i].clone();
 			int position = (int) Math.floor(rand.nextDouble()*trips);
 			int newDepot = (int) Math.floor(depots*rand.nextDouble())+1;
+			while(!R.checkTypeConstraint(position, newDepot)) newDepot = (int) Math.floor(depots*rand.nextDouble())+1;
 			int newVehicle = (int) Math.floor(VperD[newDepot-1]*rand.nextDouble())+1;
 			//p("MUTATION AT pos: "+position);
 			//position ändern
@@ -673,7 +676,10 @@ public int[] selectReallyWorst(int amount){
 				//p("NEU");
 				j--;
 			}
-			if(zaehler++>1000) p("Zu häufige Wiederholung von Crossover. Vielleicht zu wenig Fahrzeuge?");
+			if(zaehler++>1000) {
+				p("Zu häufige Wiederholung von Crossover. Vielleicht zu wenig Fahrzeuge?");
+				pause();
+			}
 			if(!R.checkTime(population[i])) p("POPULATION[I] ist nicht korrekt");
 		
 		}
@@ -861,6 +867,11 @@ public int[] selectReallyWorst(int amount){
 		R.printTimes();
 	}
 	
+
+	public void printType(){
+		R.printType();
+	}
+
 	public static void p(Object s){
 	
 		System.out.println(s);
