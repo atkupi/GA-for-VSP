@@ -195,10 +195,9 @@ public class Population{
 	
 	public static void main(String[] args){
 		
-		//Population test = new Population(5, 9, 15000, 15800);
-		//doCrossover(3,0);
-		}
-
+		Population test = new Population(5, 21, 10000, 19000);
+		p(Arrays.toString(test.getVehicleCirculation(4,1,1)));
+	}
 	
 /*Methden*/
 	public void nextGeneration(){
@@ -368,6 +367,52 @@ public class Population{
 			b[i] = a[i][0];
 		}
 		return b;
+	}
+	
+/*Auswertung*/
+	//anzahl verwndeter Fahrzeuge aus depot; depot=0 -> insgesamt verwendete Fahrzeuge
+	public int usedVehicles(int I, int depot){
+		int amount = 0;
+		
+		if( I<0 || I>=individuals || depot<0 || depot >depots){
+			p("Fehler: Abzufragendes Individuum/Depot existiert nicht");
+			return -1;
+		}else{
+			if(depot==0){
+				for(int i=1;i<=depots;i++)amount+=usedVehicles(I,i);
+				
+				return amount;
+			}else{
+				
+				List<Integer> usedVehicle = new ArrayList<Integer>();
+				for(int i=0;i<trips;i++){
+					if(population[I][i*2]==depot){
+						if(!usedVehicle.contains(new Integer(population[I][i*2+1]))){
+							amount++;
+							usedVehicle.add(new Integer(population[I][i*2+1]));
+						}
+					}
+				}
+				return amount;
+			}
+		}
+	}
+	
+	public int[] getVehicleCirculation(int I, int depot, int vehicle){
+
+		List<Integer> scheduled_trips = new ArrayList<Integer>();
+		
+		for(int i=0;i<trips;i++){
+			if(population[I][i*2]==depot && population[I][i*2+1]==vehicle) scheduled_trips.add(new Integer(i));
+		}
+		if(scheduled_trips.size()==0) {
+			p("Vehikel nicht genutzt!");
+			return null;
+		}
+		int[] r = new int[scheduled_trips.size()];
+		for(int i=0;i<r.length;i++) r[i]= scheduled_trips.get(i).intValue();
+		
+		return r;
 	}
 	/*-----------------*/
 	
@@ -821,6 +866,7 @@ public int[] selectReallyWorst(int amount){
 		System.out.println(s);
 	}
 
+	
 	public void pause(){
 		try{
 			p("Pause.");
